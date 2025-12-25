@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقترح مشروع نظام البوابات الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --bg-color: #fff;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 21cm;
+            margin: 0 auto;
+            padding: 2cm;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            font-size: 22px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        ul li::before {
+            content: "•";
+            color: var(--secondary-color);
+            font-weight: bold;
+            position: absolute;
+            right: 0;
+        }
+
+        .diagram-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .diagram-label {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .highlight-box {
+            background-color: var(--light-bg);
+            border-right: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            text-align: right;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .total-row td {
+            font-weight: bold;
+            background-color: var(--light-bg);
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        @media print {
+            body {
+                background: none;
+            }
+
+            .container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                max-width: none;
+            }
+
+            @page {
+                size: A4;
+                margin: 2cm;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>مقترح نظام الدخول الذكي للمجمعات السكنية</h1>
+            <p>نظام بوابات ذكية يعتمد على تقنية QR Code للأمان والسهولة</p>
+        </header>
+
+        <section>
+            <h2>نظرة عامة على النظام</h2>
+            <p>
+                يهدف هذا المشروع إلى توفير نظام ذكي لإدارة بوابات المجمع السكني، مما يضمن الراحة والأمان. بدلاً من
+                المفاتيح أو البطاقات التقليدية، يستخدم السكان هواتفهم للدخول أو إرسال "دعوات رقمية" لضيوفهم.
+            </p>
+
+            <div class="diagram-container">
+                <!-- System Overview Diagram -->
+                <svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background Lines -->
+                    <line x1="200" y1="100" x2="600" y2="100" stroke="#3498db" stroke-width="4"
+                        stroke-dasharray="10,5" />
+
+                    <!-- Admin/Cloud Node -->
+                    <circle cx="400" cy="100" r="60" fill="#ecf0f1" stroke="#2c3e50" stroke-width="3" />
+                    <text x="400" y="95" text-anchor="middle" font-weight="bold" fill="#2c3e50" font-family="Cairo"
+                        font-size="16">النظام المركزي</text>
+                    <text x="400" y="120" text-anchor="middle" fill="#7f8c8d" font-family="Cairo" font-size="12">(في
+                        السحابة/الإنترنت)</text>
+
+                    <!-- App Node -->
+                    <rect x="50" y="50" width="150" height="100" rx="10" fill="#e8f6f3" stroke="#1abc9c"
+                        stroke-width="3" />
+                    <text x="125" y="105" text-anchor="middle" font-weight="bold" fill="#16a085" font-family="Cairo"
+                        font-size="16">تطبيق السكان</text>
+
+                    <!-- Gate Node -->
+                    <rect x="600" y="50" width="150" height="100" rx="10" fill="#fdf2e9" stroke="#e67e22"
+                        stroke-width="3" />
+                    <text x="675" y="105" text-anchor="middle" font-weight="bold" fill="#d35400" font-family="Cairo"
+                        font-size="16">بوابة الأمن</text>
+
+                    <!-- Labels -->
+                    <text x="275" y="80" text-anchor="middle" fill="#3498db" font-family="Cairo" font-size="12">إرسال
+                        الدعوات</text>
+                    <text x="525" y="80" text-anchor="middle" fill="#3498db" font-family="Cairo" font-size="12">التحقق
+                        من البيانات</text>
+                </svg>
+                <div class="diagram-label">شكل توضيحي (1): مكونات النظام الرئيسية وعلاقتها ببعضها</div>
+            </div>
+
+            <div class="diagram-container">
+                <img src="QR%20Code%20Illustration.png" alt="QR Code Illustration"
+                    style="max-width: 100%; height: auto; max-height: 300px;">
+                <div class="diagram-label">شكل توضيحي: نموذج لآلية عمل رمز الاستجابة السريعة</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>مكونات النظام</h2>
+
+            <div class="highlight-box">
+                <h3>1. تطبيق الهاتف المحمول (للسكان والملاك)</h3>
+                <ul>
+                    <li>حساب خاص لكل مالك وحدة او مستأجر (معتمدة من المالك).</li>
+                    <li>إمكانية إنشاء حساب لأفراد العائلة والمصرح لهم.</li>
+                    <li>إمكانية إنشاء رموز QR مؤقتة للزوار والضيوف لمرة واحدة أو لفترة محددة.</li>
+                    <li>يتم حفظ وتوثيق جميع الرموز في قاعدة البيانات السحابية لضمان الأمان.</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h3>2. محطة الحراسة والبوابة (نقطة الأمن)</h3>
+                <ul>
+                    <li>قارئ QR Code متصل بجهاز كمبيوتر لدى موظف الأمن.</li>
+                    <li>برنامج خاص للحارس يقوم بقراءة الرمز والتحقق من صحته فورياً عبر السحابة (Cloud).</li>
+                    <li>عرض بيانات حامل الرمز (الاسم، نوع التصريح، الوحدة السكنية) أمام الحارس.</li>
+                    <li>زر للموافقة اليدوية من الحارس بعد التأكد، والذي يقوم بإرسال إشارة لفتح البوابة الإلكترونية.</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h3>3. لوحة تحكم الإدارة (Admin Dashboard)</h3>
+                <ul>
+                    <li>لوحة تحكم خاصة بإدارة المجمع السكني لإدارة النظام بالكامل.</li>
+                    <li>خاصية إرسال روابط دعوة للملاك لتفعيل حساباتهم ودعوة أسرهم.</li>
+                    <li>سجل كامل (Logs) لجميع عمليات الدخول (الوقت، المستخدم، البوابة) للمراجعة الأمنية.</li>
+                    <li>إدارة صلاحيات الملاك والمستأجرين وإمكانية حظر الدخول عند الحاجة.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>رحلة الزائر (آلية العمل)</h2>
+            <div class="diagram-container">
+                <!-- User Flow Diagram -->
+                <svg viewBox="0 0 800 180" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Step 1 (Rightmost) -->
+                    <g transform="translate(660, 40)">
+                        <rect width="120" height="80" rx="8" fill="#3498db" fill-opacity="0.1" stroke="#3498db"
+                            stroke-width="2" />
+                        <text x="60" y="45" text-anchor="middle" font-weight="bold" fill="#3498db" font-family="Cairo"
+                            font-size="14">المالك/التطبيق</text>
+                        <text x="60" y="65" text-anchor="middle" fill="#555" font-family="Cairo" font-size="11">إنشاء
+                            الرمز</text>
+                    </g>
+
+                    <!-- Arrow 1 -->
+                    <path d="M650 80 L590 80" stroke="#95a5a6" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                    <!-- Step 2 -->
+                    <g transform="translate(460, 40)">
+                        <rect width="120" height="80" rx="8" fill="#f1c40f" fill-opacity="0.1" stroke="#f1c40f"
+                            stroke-width="2" />
+                        <text x="60" y="45" text-anchor="middle" font-weight="bold" fill="#f39c12" font-family="Cairo"
+                            font-size="14">الزائر عند البوابة</text>
+                        <text x="60" y="65" text-anchor="middle" fill="#555" font-family="Cairo" font-size="11">مسح
+                            الكود</text>
+                    </g>
+
+                    <!-- Arrow 2 -->
+                    <path d="M450 80 L390 80" stroke="#95a5a6" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                    <!-- Step 3 -->
+                    <g transform="translate(260, 40)">
+                        <rect width="120" height="80" rx="8" fill="#e74c3c" fill-opacity="0.1" stroke="#e74c3c"
+                            stroke-width="2" />
+                        <text x="60" y="45" text-anchor="middle" font-weight="bold" fill="#c0392b" font-family="Cairo"
+                            font-size="14">موظف الأمن</text>
+                        <text x="60" y="65" text-anchor="middle" fill="#555" font-family="Cairo" font-size="11">مراجعة
+                            وتأكيد</text>
+                    </g>
+
+                    <!-- Arrow 3 -->
+                    <path d="M250 80 L190 80" stroke="#95a5a6" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                    <!-- Step 4 (Leftmost) -->
+                    <g transform="translate(60, 40)">
+                        <rect width="120" height="80" rx="8" fill="#2ecc71" fill-opacity="0.1" stroke="#2ecc71"
+                            stroke-width="2" />
+                        <text x="60" y="45" text-anchor="middle" font-weight="bold" fill="#27ae60" font-family="Cairo"
+                            font-size="14">البوابة</text>
+                        <text x="60" y="65" text-anchor="middle" fill="#555" font-family="Cairo" font-size="11">فتح
+                            تلقائي</text>
+                    </g>
+
+                    <!-- Arrowhead Def -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"
+                            markerUnits="strokeWidth">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#95a5a6" />
+                        </marker>
+                    </defs>
+                </svg>
+                <div class="diagram-label">شكل توضيحي (2): تسلسل عملية الدخول من التطبيق وحتى فتح البوابة</div>
+            </div>
+
+            <p><strong>الخطوات بالتفصيل:</strong></p>
+            <ol style="padding-right: 20px;">
+                <li><strong>الطلب:</strong> يقوم المالك بإنشاء "تصريح دخول" (رمز QR) من تليفونه وإرساله للزائر (واتساب
+                    مثلاً).</li>
+                <li><strong>الوصول:</strong> يصل الزائر ويضع شاشة تليفونه أمام القارئ عند البوابة.</li>
+                <li><strong>التحقق:</strong> تظهر صورة الزائر وبياناته فوراً عند الحارس.</li>
+                <li><strong>الدخول:</strong> بمجرد موافقة الحارس بضغطة زر، تفتح البوابة ويُحفظ وقت الدخول.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>الميزانية المقترحة وتفاصيل التكلفة</h2>
+            <p>التكلفة الإجمالية للمشروع هي <strong>320,000 جنيه مصري</strong>.</p>
+
+
+
+
+            <h3>تفاصيل الميزانية (للاستخدام الداخلي)</h3>
+
+            <h4>1. تطوير البرمجيات (Software Development)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>البند</th>
+                        <th>التفاصيل التقنية</th>
+                        <th>التكلفة (ج.م)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>تطوير تطبيق الهاتف (Mobile App)</td>
+                        <td>تطبيق (Flutter) للسكان والملاك (iOS/Android)</td>
+                        <td>55,000</td>
+                    </tr>
+                    <tr>
+                        <td>تطوير النظام المركزي (Backend & Frontend)</td>
+                        <td>لوحة تحكم و API باستخدام (DotNet Core + Angular)</td>
+                        <td>65,000</td>
+                    </tr>
+                    <tr>
+                        <td>تطبيق سطح المكتب (Desktop App)</td>
+                        <td>نظام الحماية والمراقبة للبوابات</td>
+                        <td>35,000</td>
+                    </tr>
+                    <tr>
+                        <td>تجهيز السيرفرات (Server Setup)</td>
+                        <td>إعداد وتكوين البنية التحتية السحابية</td>
+                        <td>15,000</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>إجمالي البرمجيات</td>
+                        <td></td>
+                        <td>170,000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>2. التجهيزات والمعدات (Hardware)</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>البند</th>
+                        <th>العدد</th>
+                        <th>سعر الوحدة</th>
+                        <th>الإجمالي (ج.م)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>مشتملات ربط الشبكة (Cables, CAT6A-POE, Accessories)</td>
+                        <td>2</td>
+                        <td>7,500</td>
+                        <td>15,000</td>
+                    </tr>
+                    <tr>
+                        <td>جهاز توزيع شبكة (Network Switch) - توريد وتركيب</td>
+                        <td>1</td>
+                        <td>90,000</td>
+                        <td>90,000</td>
+                    </tr>
+                    <tr>
+                        <td>قارئ QR Code (Reader) - توريد وتركيب وتشغيل</td>
+                        <td>2</td>
+                        <td>10,000</td>
+                        <td>20,000</td>
+                    </tr>
+                    <tr>
+                        <td>جهاز كمبيوتر (PC Workstation) - توريد وتركيب</td>
+                        <td>1</td>
+                        <td>25,000</td>
+                        <td>25,000</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>إجمالي الهاردوير</td>
+                        <td></td>
+                        <td></td>
+                        <td>150,000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </section>
+
+        <section>
+            <h2>خطة الدعم الفني والصيانة السنوية</h2>
+            <p>يتم توفير عقد صيانة ودعم فني سنوي لضمان استمرارية عمل النظام بكفاءة، ويشمل المستويات التالية:</p>
+
+            <div class="highlight-box">
+                <h3>مستويات الدعم الفني (Support Levels)</h3>
+                <ul>
+                    <li><strong>المستوى الأول (L1 - Support):</strong> دعم أولي يتم من خلال موظفي العميل (الأمن/الإدارة)
+                        للتعامل مع الأسئلة المعتادة والمشاكل التشغيلية البسيطة.</li>
+                    <li><strong>المستوى الثاني (L2 - Technical):</strong> دعم تقني عن بعد (Remote) يتم من خلال فريق
+                        التطوير لحل المشاكل التقنية التي لا يستطيع فريق L1 حلها.</li>
+                    <li><strong>المستوى الثالث (L3 - Developer):</strong> تدخل برمجي من فريق التطوير لإصلاح العيوب
+                        البرمجية (Bugs).</li>
+                </ul>
+                <p style="margin-top: 10px; font-size: 0.9em;">* يتولى فريق التطوير لدينا مسؤولية الدعم للمستويين L2 و
+                    L3 بالكامل.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h3>تكلفة عقد الصيانة السنوي (Annual Support Cost)</h3>
+                <p>يتم احتساب تكلفة الدعم الفني السنوي بناءً على "بنك ساعات" (Bank of Hours) لكل جزء من النظام:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الجزء (Component)</th>
+                            <th>عدد الساعات (سنوياً)</th>
+                            <th>التكلفة السنوية (ج.م)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>دعم تطبيق الموبايل (Mobile App Support)</td>
+                            <td>60 ساعة</td>
+                            <td>10,000</td>
+                        </tr>
+                        <tr>
+                            <td>دعم الويب والواجهة الخلفية (Web & Backend Support)</td>
+                            <td>60 ساعة</td>
+                            <td>20,000</td>
+                        </tr>
+                        <tr>
+                            <td>استضافة ودعم السيرفرات (Server Hosting & Support)</td>
+                            <td>-</td>
+                            <td>15,000</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>إجمالي الدعم السنوي</td>
+                            <td>120 ساعة</td>
+                            <td>45,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <h3>ضمان ودعم الأجهزة (Hardware Warranty & Support)</h3>
+                <ul>
+                    <li><strong>عيوب الصناعة:</strong> ضمان ودعم فني مجاني لمدة 3 سنوات ضد عيوب الصناعة لجميع الأجهزة
+                        والمعدات الموردة.</li>
+                    <li><strong>عيوب الاستخدام:</strong> في حالة حدوث أعطال ناتجة عن سوء الاستخدام أو الحوادث، يتحمل
+                        العميل تكلفة قطع الغيار بالإضافة إلى تكلفة الدعم الفني اللازم للإصلاح.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- <footer class="footer">
+            <p>تم إعداد هذا المقترح لغرض الدراسة والتنفيذ.</p>
+            <p>&copy; 2025 فريق التطوير </p>
+        </footer> -->
+    </div>
+</body>
+
+</html>
