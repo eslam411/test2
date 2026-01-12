@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux DMZ Deployment Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2c5282;
+            --accent: #3182ce;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --border: #e2e8f0;
+            --important-bg: #fffaf0;
+            --important-border: #f6ad55;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 60px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 4px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin: 40px 0 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin: 25px 0 15px;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin: 20px 0 10px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
+        .important {
+            background: var(--important-bg);
+            border-left: 5px solid var(--important-border);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .important strong {
+            color: #9c4221;
+            display: block;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            text-align: left;
+            padding: 12px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:nth-child(even) {
+            background: #f1f5f9;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #edf2f7;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #d53f8c;
+            font-size: 0.9rem;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .section-divider {
+            margin: 50px 0;
+            border: 0;
+            border-top: 2px dashed var(--border);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                margin: 0;
+                max-width: 100%;
+                padding: 40px;
+            }
+
+            pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                border: 1px solid #ddd;
+                background: #f9f9f9 !important;
+                color: black !important;
+            }
+
+            .important {
+                break-inside: avoid;
+            }
+
+            h1,
+            h2,
+            h3 {
+                break-after: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Linux DMZ Deployment Guide</h1>
+            <p>Step-by-step instructions for deploying the application ecosystem across a refined 4-server Linux
+                environment (DMZ, Internal Core, and 2x Hangfire).</p>
+        </header>
+
+        <div class="important">
+            <strong>Important Notification</strong>
+            This guide is a <strong>base template</strong> for reference. Configuration paths, filenames, and
+            environment variables must be reviewed and adjusted by your infrastructure team to match specific
+            environment requirements and security policies.
+        </div>
+
+        <section id="communication-matrix">
+            <h2>1. Communication Matrix</h2>
+            <p>This matrix defines the network flows and firewall requirements between zones.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Destination</th>
+                        <th>Port</th>
+                        <th>Protocol</th>
+                        <th>Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>External (Staff)</td>
+                        <td>DMZ Server</td>
+                        <td>8085</td>
+                        <td>TCP (HTTPS)</td>
+                        <td>Admin Dashboard Frontend</td>
+                    </tr>
+                    <tr>
+                        <td>External (Customer)</td>
+                        <td>DMZ Server</td>
+                        <td>443</td>
+                        <td>TCP (HTTPS)</td>
+                        <td>Client WebApp & API Gateway</td>
+                    </tr>
+                    <tr>
+                        <td>EBC Services</td>
+                        <td>DMZ Server</td>
+                        <td>443</td>
+                        <td>TCP (HTTPS)</td>
+                        <td>Proxy to Payment Callback via Gateway</td>
+                    </tr>
+                    <tr>
+                        <td>DMZ (Gateway)</td>
+                        <td>Internal Server</td>
+                        <td>8083</td>
+                        <td>TCP (HTTP)</td>
+                        <td>Proxying to Backend APIs & Admin APIs</td>
+                    </tr>
+                    <tr>
+                        <td>DMZ (Gateway)</td>
+                        <td>Hangfire Servers</td>
+                        <td>8083</td>
+                        <td>TCP</td>
+                        <td>Proxying to Hangfire Dashboard Nodes</td>
+                    </tr>
+                    <tr>
+                        <td>All Servers</td>
+                        <td>External DB</td>
+                        <td>5432</td>
+                        <td>TCP</td>
+                        <td>Postgres Database Connectivity (Managed)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="prerequisites">
+            <h2>2. Server Preparation & Prerequisites</h2>
+            <p>Perform these steps on <strong>all servers</strong> (DMZ, Internal-Core, Hangfire-1, Hangfire-2).</p>
+
+            <h3>2.1 OS Preparation (Ubuntu 22.04 LTS recommended)</h3>
+            <pre><code>sudo apt update && sudo apt upgrade -y
+sudo apt install -y curl wget git unzip build-essential</code></pre>
+
+            <h3>2.2 Install .NET 8 Runtime</h3>
+            <p>All servers hosting .NET binaries (including the DMZ Gateway) require the ASP.NET Core Runtime.</p>
+            <pre><code># Register Microsoft package repository
+wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+# Install ASP.NET Core Runtime
+sudo apt update
+sudo apt install -y aspnetcore-runtime-8.0</code></pre>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="dmz-setup">
+            <h2>3. DMZ Server Setup (Entry Point)</h2>
+
+            <h3>3.1 Nginx Installation</h3>
+            <pre><code>sudo apt install -y nginx
+sudo systemctl enable nginx</code></pre>
+
+            <h3>3.2 Application Directory Structure</h3>
+            <pre><code>sudo mkdir -p /var/www/ecis-dmz/{admin-fe,client-fe,gateway}
+sudo chown -R www-data:www-data /var/www/ecis-dmz</code></pre>
+
+            <h3>3.3 Gateway (YARP) Service Detail</h3>
+            <p>The Gateway (YARP) handles SSL termination and secure internal routing.</p>
+            <ol style="margin-left: 20px; color: var(--text-light);">
+                <li>Deploy your Gateway binaries to <code>/var/www/ecis-dmz/gateway</code>.</li>
+                <li>Configure <code>appsettings.json</code> to point clusters to
+                    <code>http://&lt;Internal_IP&gt;:8083</code>.</li>
+                <li>Create the service unit file.</li>
+            </ol>
+
+            <h4>ecis-gateway.service Template:</h4>
+            <pre><code>[Unit]
+Description=ECIS API Gateway Service (YARP)
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/ecis-dmz/gateway
+ExecStart=/usr/bin/dotnet /var/www/ecis-dmz/gateway/Gateway.dll --urls "http://127.0.0.1:5000"
+Restart=always
+RestartSec=10
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+
+            <h3>3.4 Nginx Virtual Host</h3>
+            <pre><code># Admin (8085)
+server {
+    listen 8085;
+    root /var/www/ecis-dmz/admin-fe;
+    location / { try_files $uri $uri/ /index.html; }
+}
+
+# Main (443 SSL)
+server {
+    listen 443 ssl;
+    location / {
+        root /var/www/ecis-dmz/client-fe;
+        try_files $uri $uri/ /index.html;
+    }
+    location /gateway/ {
+        proxy_pass http://localhost:5000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection keep-alive;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</code></pre>
+        </section>
+
+        <hr class="section-divider">
+
+        <section id="internal-setup">
+            <h2>4. Internal Servers Setup</h2>
+
+            <h3>4.1 Internal Core (APIs)</h3>
+            <p>Hosts <strong>Admin API</strong>, <strong>Backend API</strong>, and <strong>Payment Callback</strong>.
+            </p>
+            <p>Directory: <code>/var/www/ecis-internal/{admin,apis,payment}</code></p>
+
+            <h4>Systemd Service Templates (Guild Only)</h4>
+            <pre><code># ecis-admin-api.service
+[Unit]
+Description=ECIS Admin API
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/ecis-internal/admin
+ExecStart=/usr/bin/dotnet /var/www/ecis-internal/admin/WebAdmin.dll --urls "http://0.0.0.0:8083/admin"
+Restart=always
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+
+            <pre><code># ecis-backend-api.service
+[Unit]
+Description=ECIS Backend API
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/ecis-internal/apis
+ExecStart=/usr/bin/dotnet /var/www/ecis-internal/apis/Web.dll --urls "http://0.0.0.0:8083/apis"
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+
+            <pre><code># ecis-payment-callback.service
+[Unit]
+Description=ECIS Payment Callback
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/ecis-internal/payment
+ExecStart=/usr/bin/dotnet /var/www/ecis-internal/payment/Payment.dll --urls "http://0.0.0.0:8083/payment"
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+
+            <h3>4.2 Hangfire Server Cluster (2 Servers)</h3>
+            <p>Hosts the <strong>Hangfire Dashboard & Processor</strong>. Repeat these steps on <strong>both</strong>
+                Nodes.</p>
+            <p>Directory: <code>/var/www/ecis-hangfire</code></p>
+
+            <pre><code># ecis-hangfire.service
+[Unit]
+Description=ECIS Hangfire Node
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/ecis-hangfire
+ExecStart=/usr/bin/dotnet /var/www/ecis-hangfire/Hangfire.dll --urls "http://0.0.0.0:8083/hangfire"
+Restart=always
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+        </section>
+
+        <section id="verification">
+            <h2>5. Security & Verification</h2>
+
+            <h3>5.1 Firewall (UFW)</h3>
+            <ul style="margin-left: 20px; color: var(--text-light);">
+                <li><strong>DMZ</strong>: <code>allow 443</code>, <code>allow 8085</code>.</li>
+                <li><strong>Internal Core</strong>: <code>allow from &lt;DMZ_IP&gt; to any port 8083</code>.</li>
+                <li><strong>Hangfire Nodes</strong>: <code>allow from &lt;DMZ_IP&gt; to any port 8083</code>.</li>
+            </ul>
+
+            <h3>5.2 Service Management</h3>
+            <pre><code>sudo systemctl daemon-reload
+sudo systemctl enable --now [service_name]
+sudo systemctl status [service_name]</code></pre>
+        </section>
+
+        <!-- <footer style="margin-top: 60px; text-align: center; color: var(--text-light); font-size: 0.85rem; border-top: 1px solid var(--border); padding-top: 20px;">
+            &copy; 2026 ECIS Infrastructure Team - Technical Deployment Documentation
+        </footer> -->
+    </div>
+</body>
+
+</html>
